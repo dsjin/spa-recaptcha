@@ -1,7 +1,7 @@
 <template>
   <div>
     <re-captcha
-      :siteKey="''"
+      :siteKey="recaptcha"
       @verify="verify"
       @expire="expiredCallback"
       @fail="errorCallback"
@@ -18,13 +18,16 @@
     >
       Get Token
     </button>
-    {{ token }}
+    <div>
+      {{ token }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import ReCaptcha from '@/components/ReCaptcha.vue'
+import config from '@/config'
 export default Vue.extend({
   name: 'SendForm',
   components: {
@@ -32,18 +35,20 @@ export default Vue.extend({
   },
   data () {
     return {
-      token: ''
+      token: '',
+      recaptcha: config.recaptcha
     }
   },
   methods: {
-    verify (response: any) {
+    verify (response: string) {
       console.log(response)
     },
     expiredCallback () {
       console.log('expiredCallback')
     },
-    errorCallback () {
+    errorCallback (error: any) {
       console.log('errorCallback')
+      console.log(error)
     },
     invoke () {
       // (this.$refs.recaptcha as any).execute()

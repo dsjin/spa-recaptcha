@@ -55,7 +55,7 @@ export default Vue.extend({
         this.$refs.gRecaptcha,
         {
           sitekey: this.siteKey,
-          callback: (response: any) => this.$emit('verify', response),
+          callback: (response: string) => this.$emit('verify', response),
           'expired-callback': () => this.$emit('expire'),
           'error-callback': () => this.$emit('fail'),
           size: 'invisible'
