@@ -3,8 +3,9 @@
     <re-captcha
       :siteKey="''"
       @verify="verify"
-      @expired-callback="expiredCallback"
-      @error-callback="errorCallback"
+      @expire="expiredCallback"
+      @fail="errorCallback"
+      @token="receiveToken"
       ref="recaptcha"
     />
     <button
@@ -45,11 +46,19 @@ export default Vue.extend({
       console.log('errorCallback')
     },
     invoke () {
-      (this.$refs.recaptcha as any).execute()
+      // (this.$refs.recaptcha as any).execute()
+      this.$root.$emit('recaptcha.invoke')
     },
     getToken () {
-      this.token = (this.$refs.recaptcha as any).token()
-      if (!this.token) {
+      // this.token = (this.$refs.recaptcha as any).token()
+      // if (!this.token) {
+      //   this.token = 'Please challenge once agian'
+      // }
+      this.$root.$emit('recaptcha.token')
+    },
+    receiveToken (token: string) {
+      this.token = token
+      if (!token) {
         this.token = 'Please challenge once agian'
       }
     }

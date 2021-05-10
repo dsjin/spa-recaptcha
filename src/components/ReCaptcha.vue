@@ -38,6 +38,16 @@ export default Vue.extend({
     if ((window as any).grecaptcha && !this.loading && !this.gCaptcha) {
       this.gCaptchaRender()
     }
+    this.$root.$on('recaptcha.invoke', () => {
+      this.execute()
+    })
+    this.$root.$on('recaptcha.token', () => {
+      this.token()
+    })
+  },
+  beforeDestroy () {
+    this.$root.$off('recaptcha.invoke')
+    this.$root.$off('recaptcha.token')
   },
   methods: {
     gCaptchaRender () {
@@ -59,7 +69,7 @@ export default Vue.extend({
       (window as any).grecaptcha.execute(this.gCaptcha)
     },
     token () {
-      return (window as any).grecaptcha.getResponse(this.gCaptcha)
+      this.$emit('token', (window as any).grecaptcha.getResponse(this.gCaptcha))
     }
   }
 })
