@@ -57,6 +57,9 @@ export default Vue.extend({
     },
     execute () {
       (window as any).grecaptcha.execute(this.gCaptcha)
+    },
+    token () {
+      return (window as any).grecaptcha.getResponse(this.gCaptcha)
     }
   }
 })

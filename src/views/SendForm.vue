@@ -1,7 +1,7 @@
 <template>
   <div>
     <re-captcha
-      :siteKey="'own-recapcha-sitekey'"
+      :siteKey="''"
       @verify="verify"
       @expired-callback="expiredCallback"
       @error-callback="errorCallback"
@@ -12,6 +12,12 @@
     >
       Invoke The Challenge
     </button>
+    <button
+      @click="getToken"
+    >
+      Get Token
+    </button>
+    {{ token }}
   </div>
 </template>
 
@@ -22,6 +28,11 @@ export default Vue.extend({
   name: 'SendForm',
   components: {
     ReCaptcha
+  },
+  data () {
+    return {
+      token: ''
+    }
   },
   methods: {
     verify (response: any) {
@@ -35,6 +46,12 @@ export default Vue.extend({
     },
     invoke () {
       (this.$refs.recaptcha as any).execute()
+    },
+    getToken () {
+      this.token = (this.$refs.recaptcha as any).token()
+      if (!this.token) {
+        this.token = 'Please challenge once agian'
+      }
     }
   }
 })
